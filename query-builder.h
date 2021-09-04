@@ -7,9 +7,7 @@
 namespace DBTools {
 class QueryBuilder {
     private:
-    /**
-     * statement pieces map for common usage
-     */
+    // statement pieces map for common usage
     std::map<std::string, std::string> _commonQueryMap = {
         {"operation", ""},
         {"condition", ""},
@@ -18,9 +16,7 @@ class QueryBuilder {
         {"offset", ""}
     };
 
-    /**
-     * statement pieces map for table creation
-     */
+    // statement pieces map for table creation
     std::map<std::string, std::string> _creationTableQueryMap = {
         {"operation", ""},
         {"rules", ""}
