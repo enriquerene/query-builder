@@ -7,6 +7,7 @@ Query Builder makes your life easier building SQL queries with pretty intuitive 
 - Usage
 - Examples
 - API reference
+- Roadmap
 
 ## Overview
 Query Builder provides an easy to use API for creating SQL queries. It gets inspiration from libraries like Eloquent in PHP programming.
@@ -85,4 +86,9 @@ std::string queryString = qb.Insert("my_table", data).getQueryString();
 See API reference for complete usage.
 
 ## API reference
+In development process.
 
+## Roadmap
+These are the next steps for future releases:
+- Build API Reference
+- Define the functions that create the database tables
