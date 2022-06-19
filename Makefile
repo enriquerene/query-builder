@@ -1,38 +1,28 @@
 CC=g++
-PROJ_DIR=$(IHOURS)/iHours-api
-LIBS=$(PROJ_DIR)/libs
-LIB_DIR=$(PROJ_DIR)/libs/database/query-builder
-SRC_CPP=query-builder.cpp
-SRC_HPP=query-builder.h
-CFLAGS=-I$(LIBS)
+CFLAGS=-std=c++11 -Wall
 
 DIR_BIN=bin
-DIR_OBJ=obj
+DIR_TEST=tests
+DIR_SRC=src
 
-TEST_CPP=$(DIR_BIN)/query-builder-test.cpp
+TEST_MAIN=$(DIR_TEST)/main.cpp
 TEST_BIN=$(DIR_BIN)/test-query-builder
-TEST_OBJ=$(DIR_OBJ)/query-builder-test.o $(DIR_OBJ)/query-builder.o
-TEST_CFLAGS=-I$(LIBS)
+TEST_FLAGS=--success
 
-all: clean test
+all: clean $(DIR_BIN) test
 
-$(DIR_OBJ)/%.o: %.cpp
-	@echo "Compiling $^ into $@"
-	mkdir -p $(DIR_OBJ)
-	$(CC) $(CFLAGS) -c $^
-	mv -t $(DIR_OBJ) ./*.o
+$(TEST_BIN): $(TEST_MAIN)
+	@echo "Building $@"
+	$(CC) $(CFLAGS) -o $@ $<
+	@echo "Now you can run $(TEST_BIN) $(TEST_FLAGS)"
 	@echo ""
 
-$(TEST_BIN): $(TEST_OBJ)
-	@echo "Linking $^ into $@"
+$(DIR_BIN):
 	mkdir -p $(DIR_BIN)
-	$(CC) -o $(TEST_BIN) $^
-	@echo "Now you can run $(TEST_BIN)"
-	@echo ""
 
 test: $(TEST_BIN)
 	@echo "Running $(TEST_BIN)"
-	$(TEST_BIN)
+	$(TEST_BIN) $(TEST_FLAGS)
 
 clean: 
 	rm -rf $(DIR_BIN)

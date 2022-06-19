@@ -36,20 +36,20 @@ Building query for reading from a specific table named my_table inside database.
 
 Fetching all fields from table.:
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 std::string queryString = qb.Select("my_table").getQueryString();
 // "SELECT * FROM my_table" 
 ```
 
 Fetching only ID field from table.
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 std::string queryString = qb.Select("my_table", "ID").getQueryString();
 // "SELECT ID FROM my_table" 
 ```
 
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 Fetching ID and name fields from table.
 std::string query = qb.Select("my_table", "ID, name").getQueryString();
 // "SELECT ID, name FROM my_table"
@@ -57,14 +57,14 @@ std::string query = qb.Select("my_table", "ID, name").getQueryString();
 
 Fetching ID and name fields from table where scope is user.
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 std::string query = qb.Select("my_table", "ID, name").Where({{"scope", "'user'"}}).getQueryString();
 //  "SELECT ID, name FROM my_table WHERE scope = 'user'"
 ```
 
 Fetching all fields and limit up to 100 results.
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 std::string query = qb.Select("my_table").Limit(100).getQueryString();
 //  "SELECT * FROM my_table LIMIT 100"
 ```
@@ -73,7 +73,7 @@ Building a query for inserting data into specific table named my_table inside da
 
 Insert product_title and product_quantity data into respective columns of table.
 ```C++
-DBTools::QueryBuilder qb;
+QueryBuilder::DataManipulationLanguage qb;
 std::string query = qb.Select("my_table").Limit(100).getQueryString();
 std::map<std::string, std::string> data = {
     {"product_title", "'my product'"},

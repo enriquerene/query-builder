@@ -1,6 +1,6 @@
-#include "query-builder.h"
+#include "./data-definition-language.h"
 
-std::string DBTools::QueryBuilder::joinStringArray(size_t arrSize, std::string const *strArr, std::string strJoinner) {
+std::string QueryBuilder::DataManipulationLanguage::joinStringArray(size_t arrSize, std::string const *strArr, std::string strJoinner) {
     std::string str = "";
     for (size_t i = 0; i < arrSize; i++) {
         str += strArr[i];
@@ -11,9 +11,9 @@ std::string DBTools::QueryBuilder::joinStringArray(size_t arrSize, std::string c
     return str;
 }
 
-DBTools::QueryBuilder::QueryBuilder() {}
+QueryBuilder::DataManipulationLanguage::DataManipulationLanguage() {}
 
-std::string DBTools::QueryBuilder::getQueryString() {
+std::string QueryBuilder::DataManipulationLanguage::getQueryString() {
     std::string queryString = this->_commonQueryMap["operation"];
     if (this->_commonQueryMap["condition"] != "") {
         queryString += " ";
@@ -35,14 +35,14 @@ std::string DBTools::QueryBuilder::getQueryString() {
     return queryString;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Select(std::string tableName, std::string fields) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Select(std::string tableName, std::string fields) {
     std::string queryPiece = "SELECT " + fields + " FROM " + tableName;
     this->_commonQueryMap["operation"] = queryPiece;
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Where(std::map<std::string, std::string> fieldValueMap, std::string joinner) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Where(std::map<std::string, std::string> fieldValueMap, std::string joinner) {
     std::string queryPiece = "WHERE ";
     std::string pairs[fieldValueMap.size()];
 
@@ -54,13 +54,13 @@ DBTools::QueryBuilder DBTools::QueryBuilder::Where(std::map<std::string, std::st
         counter += 1;
     }
     joinner = " " + joinner + " ";
-    queryPiece += DBTools::QueryBuilder::joinStringArray(fieldValueMap.size(), pairs, joinner);
+    queryPiece += QueryBuilder::DataManipulationLanguage::joinStringArray(fieldValueMap.size(), pairs, joinner);
     this->_commonQueryMap["condition"] = queryPiece;
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::OrderBy(std::map<std::string, std::string> fieldAscOrDescMap) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::OrderBy(std::map<std::string, std::string> fieldAscOrDescMap) {
     std::string queryPiece = "ORDER BY ";
     std::string pairs[fieldAscOrDescMap.size()];
 
@@ -71,32 +71,32 @@ DBTools::QueryBuilder DBTools::QueryBuilder::OrderBy(std::map<std::string, std::
         pairs[counter] += it->second;
         counter += 1;
     }
-    queryPiece += DBTools::QueryBuilder::joinStringArray(fieldAscOrDescMap.size(), pairs, ", ");
+    queryPiece += QueryBuilder::DataManipulationLanguage::joinStringArray(fieldAscOrDescMap.size(), pairs, ", ");
     this->_commonQueryMap["order"] = queryPiece;
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::OrderBy(std::string fieldName) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::OrderBy(std::string fieldName) {
     std::string queryPiece = "ORDER BY " + fieldName;
     this->_commonQueryMap["order"] = queryPiece;
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Limit(int limit) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Limit(int limit) {
     this->_commonQueryMap["limit"] = "LIMIT " + std::to_string(limit);
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Offset(int offset) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Offset(int offset) {
     this->_commonQueryMap["offset"] = "OFFSET " + std::to_string(offset);
 
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Insert(std::string tableName, std::map<std::string, std::string> data) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Insert(std::string tableName, std::map<std::string, std::string> data) {
     std::string queryColumns = "";
     std::string queryValues = "";
     for (std::map<std::string, std::string>::iterator it = data.begin(); it != data.end(); it++) {
@@ -113,15 +113,14 @@ DBTools::QueryBuilder DBTools::QueryBuilder::Insert(std::string tableName, std::
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Update(std::string tableName, std::map<std::string, std::string> data) {
-    std::string query = "UPDATE " + tableName;
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Update(std::string tableName, std::map<std::string, std::string> data) {
+    std::string query = "UPDATE " + tableName + " SET ";
     for (std::map<std::string, std::string>::iterator it = data.begin(); it != data.end(); it++) {
-        query += " SET ";
         query += it->first;
         query += " = ";
         query += it->second;
         if (std::next(it) != data.end()) {
-            query += ",";
+            query += ", ";
         }
     }
 
@@ -130,7 +129,7 @@ DBTools::QueryBuilder DBTools::QueryBuilder::Update(std::string tableName, std::
     return *this;
 }
 
-DBTools::QueryBuilder DBTools::QueryBuilder::Delete(std::string tableName) {
+QueryBuilder::DataManipulationLanguage QueryBuilder::DataManipulationLanguage::Delete(std::string tableName) {
     this->_commonQueryMap["operation"] = "DELETE FROM " + tableName;
 
     return *this;

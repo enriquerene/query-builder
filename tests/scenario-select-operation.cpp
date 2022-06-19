@@ -1,5 +1,5 @@
-SCENARIO("Building a query for reading from a specific table named my_table inside database.", "[query-builder]") {
-    DBTools::QueryBuilder qb;
+SCENARIO("Building a query for reading from a specific table named my_table inside database.", "[data-manipulation-language]") {
+    QueryBuilder::DataManipulationLanguage qb;
     std::string tableNameForTests = "my_table";
 
     SECTION("Fetching all fields from table.") {
